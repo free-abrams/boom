@@ -347,10 +347,10 @@
                         <a href="#"><i class="fa fa-cutlery"></i> <span class="nav-label">角色与权限 </span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a class="J_menuItem" href="">角色</a>
+                                <a class="J_menuItem" href="{{route('role.index')}}">角色</a>
                             </li>
                             <li>
-                                <a class="J_menuItem" href="">权限</a>
+                                <a class="J_menuItem" href="{{route('permission.index')}}">权限</a>
                             </li>
                         </ul>
                     </li>

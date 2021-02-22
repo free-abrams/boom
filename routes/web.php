@@ -22,5 +22,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 	Route::group(['middleware' => 'login'], function() {
 		Route::any('logout', 'AuthController@logout')->name('logout');
 		Route::get('/', 'HomeController@index')->name('index');
+		Route::resource('role', 'RoleController');
+		Route::resource('permission', 'PermissionController');
 	});
 });
