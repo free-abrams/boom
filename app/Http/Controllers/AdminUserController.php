@@ -2,45 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Permission;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use App\Http\Controllers\Controller;
 
-class PermissionController extends Controller
+class AdminUserController extends Controller
 {
-	
-	private $title = '权限';
-	
-	private $grid = [
-		['field' => 'id', 'title' => 'ID', 'sort' => true, 'fixed' => 'left'],
-		['field' => 'name', 'title' => 'name', 'sort' => true, 'fixed' => 'left'],
-		['field' => 'guard_name', 'title' => 'guard_name', 'sort' => true, 'fixed' => 'left'],
-		['field' => 'title', 'title' => 'title', 'sort' => true, 'fixed' => 'left'],
-		['field' => 'created_at', 'title' => 'created_at', 'sort' => true, 'fixed' => 'left'],
-	];
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-    	$data = [
-    		'title' => $this->title,
-		    'grid' => $this->grid
-	    ];
-
-    	$param = $request->all();
-    	
-    	if (isset($param['page'])) {
-    	    $res  = Permission::paginate(Arr::get($param, 'limit', 10), '*', 'page', '1');
-			
-    	    return $this->showMsg($res->items(), 0, $res->total());
-	    }
-    	
-    	
-        return view('admin/permission/index', compact('data'));
+        //
     }
 
     /**

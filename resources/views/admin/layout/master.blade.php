@@ -29,7 +29,6 @@
         <!--右侧部分开始-->
         <div id="page-wrapper" class="gray-bg dashbard-1">
             @include('admin/layout/_dashbard')
-            @include('admin/layout/_footer')
         </div>
         <!--右侧部分结束-->
         <!--右侧边栏开始-->
