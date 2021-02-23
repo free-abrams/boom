@@ -2,18 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
+use http\Client\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use App\Http\Controllers\Controller;
 
 class PermissionController extends Controller
 {
+	
+	private $title = '权限';
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('');
+    	$data = [
+    		'title' => $this->title
+	    ];
+
+    	$param = $request->all();
+    	
+    	if (isset($param['page'])) {
+    	    $res  = Permission::paginate(Arr::get($param, 'limit', 10), '*', 'page', '1');
+			
+    	    return $this->showMsg($res->items(), 0, $res->total());
+	    }
+    	
+    	
+        return view('admin/permission/permission', compact('data'));
     }
 
     /**

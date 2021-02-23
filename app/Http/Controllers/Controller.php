@@ -11,5 +11,13 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     
-    
+    public function showMsg($data = [], $code = 200, $count = 0,$msg = 'SUCCESS')
+    {
+        $return['code'] = $code;
+        $return['msg'] = $msg;
+        $return['data'] = $data;
+        $return['count'] = $count;
+        
+        return Response()->json($return);
+    }
 }

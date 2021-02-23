@@ -28,13 +28,7 @@
         <!--左侧导航结束-->
         <!--右侧部分开始-->
         <div id="page-wrapper" class="gray-bg dashbard-1">
-
-            @include('admin/layout/_border-bottom')
-
-            @include('admin/layout/_content-tabs')
-
-            @yield('content')
-
+            @include('admin/layout/_dashbard')
             @include('admin/layout/_footer')
         </div>
         <!--右侧部分结束-->
