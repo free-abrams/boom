@@ -13,11 +13,11 @@
                 </div>
             </div>
             <div class="ibox-content">
-                <form method="post" class="form-horizontal" action="{{route('role.update', ['role' => $id])}}">
+                <div class="form-horizontal" class="layui-form" lay-filter="form">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">角色名称</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" value="{{$role->name}}" name="name">
+                            <input type="text" class="form-control" value="" name="name" required>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -29,12 +29,14 @@
                         </div>
                     </div>
 
+                    <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-2">
-                            <button class="btn btn-primary" type="submit" lay-submit lay-filter="submit">保存内容</button>
+                            <a class="btn " id="submit">保存内容</a>
                         </div>
                     </div>
-                </form>
+                </div>
+
             </div>
         </div>
     </div>
@@ -42,44 +44,49 @@
 @endsection
 @section('script')
 <script type="text/javascript">
-    layui.use(['form', 'transfer'], function () {
+    layui.use(['form', 'transfer', 'layer'], function () {
         var form = layui.form;
         var transfer = layui.transfer;
+        var layer = layui.layer;
 
-        //显示搜索框
-        transfer.render({
-            elem: '#transfer',
-            data: {!! json_encode($data['permissions']) !!},
-            value:{!! json_encode($value) !!},
-            title: ['已选择', '未选择'],
-            showSearch: true,
-            width:400,
-            id:'demo1'
+    //模拟数据
+    var data1 = [
+        {"value": "4", "title": "李清照"},
+        {"value": "5", "title": "鲁迅", "disabled": true}
+    ];
+    //显示搜索框
+    transfer.render({
+        elem: '#transfer',
+        data: {!! json_encode($data['permissions']) !!},
+        title: ['已选择', '未选择'],
+        showSearch: true,
+        width:400,
+        id:'demo1'
+    });
+
+    $('#submit').on('click', function () {
+        var name = $('input[name=name]').val();
+        var getData = transfer.getData('demo1');
+        var per = [];
+
+        getData.forEach(function(item) {
+            per.push(item.value);
         });
 
-        form.on('submit(submit)', function(data){
-
-            var name = $('input[name=name]').val();
-            var getData = transfer.getData('demo1');
-            var per = [];
-            getData.forEach(function (item) {
-                per.push(item.value);
+        $.post('{{route('role.store')}}', {
+            _token: '{{csrf_token()}}',
+            name:name,
+            permissions:per
+        }, function (res) {
+            layer.open({
+                title:'提示',
+                content:res.msg
             });
-
-            $.post('{{route('role.update', ['role' => $id])}}', {
-                _method:'put',
-                _token:'{{csrf_token()}}',
-                name:name,
-                permissions:per
-            }, function (res) {
-                console.log(res.msg);
-                layer.open({
-                    title:'提示',
-                    content:res.msg
-                });
-            });
-          return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
+
+        return false;
+    });
+
 
     })
 </script>

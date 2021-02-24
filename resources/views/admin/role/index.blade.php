@@ -1,6 +1,13 @@
 @extends('admin/layout/iframe/main')
 
 @section('script')
+
+<script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="create">新增</button>
+  </div>
+</script>
+
 <script type="text/html" id="action">
   <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
@@ -8,6 +15,7 @@
 
 <script type="text/javascript">
 layui.use('table', function(){
+    var token = '{{csrf_token()}}';
   var table = layui.table;
   var grid = {!! json_encode($data['grid']) !!};
 
@@ -28,6 +36,16 @@ layui.use('table', function(){
       });
     }
     init();
+  //头工具栏事件
+  table.on('toolbar(data)', function(obj){
+    var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+    switch(obj.event){
+      case 'create':
+          var url = '{{route('role.create')}}';
+          create(url);
+      break;
+    };
+  });
 
   //监听行工具事件
   table.on('tool(data)', function(obj){
@@ -36,14 +54,39 @@ layui.use('table', function(){
     if(obj.event === 'del'){
       layer.confirm('真的删除行么', function(index){
         obj.del();
+        var url = '{{route('role.index')}}/'+ data.id;
+        del(url);
         layer.close(index);
       });
     } else if(obj.event === 'edit'){
       var url = '{{route('role.index')}}/' + data.id + '/edit';
       edit(url);
+    } else if (obj.event === 'create') {
+      var url = '{{route('role.create')}}';
+      create(url);
     }
   });
+  // 新增事件
+  function create(url)
+  {
+      // 新增 iframe 层显示
+      var index = layer.open({
+                    type:2,
+                    content:url,
+                    area: 'auto',
+                    maxmin: true,
+                    title:' ',
+                    cancel: function(index, layero){
+                        init();
+                        layer.close(index);
+                        return false;
+                    }
+                  });
 
+      layer.full(index);
+  }
+
+  // 编辑事件
   function edit(url)
   {
       // 编辑 iframe 层显示
@@ -61,6 +104,16 @@ layui.use('table', function(){
                   });
 
       layer.full(index);
+  }
+  
+  function del(url) {
+
+    $.post(url, {
+      _method:'delete',
+        _token:token
+    }, function (res) {
+        init();
+    })
   }
 });
 </script>

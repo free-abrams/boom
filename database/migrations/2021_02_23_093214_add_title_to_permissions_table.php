@@ -15,6 +15,11 @@ class AddTitleToPermissionsTable extends Migration
     {
         Schema::table('permissions', function (Blueprint $table) {
             $table->string('title')->nullable()->after('guard_name');
+            $table->integer('parent_id')->index()->default(0)->after('id');
+            $table->integer('level')->nullable()->default(0)->after('title');
+            $table->string('path')->nullable()->after('level');
+            $table->string('route')->nullable()->after('path');
+            $table->string('sort')->nullable()->after('route');
         });
     }
 
