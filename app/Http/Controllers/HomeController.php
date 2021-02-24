@@ -10,4 +10,9 @@ class HomeController extends Controller
     {
     	return view('admin.index.index');
     }
+    
+    public function error()
+    {
+    	return view('admin.302');
+    }
 }

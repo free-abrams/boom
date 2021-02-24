@@ -19,9 +19,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::post('auth', 'AuthController@login')->name('login');
 	});
 	
-	Route::group(['middleware' => 'login'], function() {
+	Route::group(['middleware' => ['login', 'adminRbac']], function() {
 		Route::any('logout', 'AuthController@logout')->name('logout');
 		Route::get('/', 'HomeController@index')->name('index');
+		Route::get('/error', 'HomeController@error')->name('index.error');
 		Route::resource('index', 'IndexController');
 		Route::resource('role', 'RoleController');
 		Route::resource('permission', 'PermissionController');
