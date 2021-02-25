@@ -20,6 +20,7 @@ class SeedRolesAndPermissionsData extends Migration
         Permission::create(['name' => 'admin-user_manage', 'guard_name' => 'admin', 'title' => '管理员', 'route' => 'admin-user.*', 'sort' => '7', 'level' => 1, 'path' => '-1-', 'parent_id' => 1]);
         Permission::create(['name' => 'role_manage', 'guard_name' => 'admin', 'title' => '角色管理', 'route' => 'role.*', 'sort' => '9', 'level' => 1, 'path' => '-1-', 'parent_id' => 1]);
         Permission::create(['name' => 'permission_manage', 'guard_name' => 'admin', 'title' => '权限管理', 'route' => 'permission.*', 'sort' => 8, 'level' => 1, 'path' => '-1-', 'parent_id' => 1]);
+        Permission::create(['name' => 'upload', 'guard_name' => 'admin', 'title' => '图片上传', 'route' => 'upload', 'sort' => 10, 'level' => 0, 'path' => '-', 'parent_id' => 0]);
 
         // 创建站长角色，并赋予权限
         $founder = Role::create(['name' => 'super_admin', 'guard_name' => 'admin', 'title' => '超级管理员']);

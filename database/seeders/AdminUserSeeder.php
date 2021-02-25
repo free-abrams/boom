@@ -15,7 +15,7 @@ class AdminUserSeeder extends Seeder
      */
     public function run()
     {
-        AdminUserFactory::times(1)->create();
+        AdminUserFactory::times(20)->create();
         
         $admin = AdminUser::find(1);
         $admin->username = 'admin@admin';

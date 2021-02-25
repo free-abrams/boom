@@ -37,7 +37,7 @@
 
     <div class="wrapper wrapper-content">
         <div class="row">
-            <table id="data" lay-filter="data" class="col-sm-12"></table>
+            <table id="data" lay-filter="data" class="col-sm-12" lay-skin="line"></table>
             <div class="col-sm-12">
                 <div class="middle-box text-center animated fadeInRightBig">
 
