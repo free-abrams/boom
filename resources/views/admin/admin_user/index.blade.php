@@ -9,7 +9,7 @@
 </script>
 
 <script type="text/html" id="avatar">
-  <img src=@{{ d.avatar }} alt="头像" width="40">
+  <img src=@{{ d.avatar }} alt="头像" width="50">
 </script>
 
 <script type="text/html" id="action">

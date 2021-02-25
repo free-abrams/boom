@@ -14,8 +14,8 @@ class AdminUserController extends Controller
 	private $title = '管理员';
 	
 	private $grid = [
-		['field' => 'id', 'title' => 'ID', 'sort' => true],
-		['field' => 'avatar', 'title' => '头像', 'templet' => '#avatar'],
+		['field' => 'id', 'title' => 'ID', 'sort' => true, 'width' => 100],
+		['field' => 'avatar', 'title' => '头像', 'templet' => '#avatar', 'height' => '50'],
 		['field' => 'name', 'title' => '昵称', 'sort' => true],
 		['field' => 'username', 'title' => '用户名', 'sort' => true],
 		['field' => 'created_at', 'title' => '创建时间', 'sort' => true],

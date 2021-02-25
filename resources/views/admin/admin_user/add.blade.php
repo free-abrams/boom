@@ -27,6 +27,17 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">头像</label>
+                        <div class="layui-upload col-sm-10">
+                          <button type="button" class="layui-btn" id="test1">上传图片</button>
+                            <input type="text" class="hidden" value="11" name="avatar">
+                          <div class="layui-upload-list col-sm-offset-2">
+                            <img class="layui-upload-img" id="demo1">
+                            <p id="demoText"></p>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">密码</label>
                         <div class="col-sm-10">
                             <input type="password" class="form-control" value="" name="password" required>
@@ -62,9 +73,10 @@
 @endsection
 @section('script')
 <script type="text/javascript">
-    layui.use(['form', 'transfer'], function () {
+    layui.use(['form', 'transfer', 'upload'], function () {
         var form = layui.form;
         var transfer = layui.transfer;
+        var upload = layui.upload;
 
         //显示搜索框
         transfer.render({
@@ -85,7 +97,7 @@
 
             $.post('{{route('admin-user.store')}}', {
                 _token:'{{csrf_token()}}',
-                avatar:'',
+                avatar:$('input[name=avatar]').val(),
                 name:$('input[name=title]').val(),
                 username:$('input[name=username]').val(),
                 password:$('input[name=password]').val(),
@@ -100,6 +112,35 @@
           return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
 
+              //普通图片上传
+      var uploadInst = upload.render({
+        elem: '#test1'
+        ,url: '{{route('upload')}}?_token={{csrf_token()}}' //改成您自己的上传接口
+        ,before: function(obj){
+          //预读本地文件示例，不支持ie8
+          obj.preview(function(index, file, result){
+            $('#demo1').attr('src', result); //图片链接（base64）
+          });
+        }
+        ,done: function(res){
+            $('input[name=avatar]').attr('value', res.data);
+          //如果上传失败
+          if(res.code > 0){
+            return layer.msg('上传失败');
+          }
+          //上传成功
+            return layer.msg(res.msg);
+        }
+        ,error: function(){
+          //演示失败状态，并实现重传
+          var demoText = $('#demoText');
+          demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+          demoText.find('.demo-reload').on('click', function(){
+            this.addClass('hiden');
+            uploadInst.upload();
+          });
+        }
+      });
     })
 </script>
 @endsection
