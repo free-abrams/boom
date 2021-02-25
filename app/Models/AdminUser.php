@@ -23,6 +23,11 @@ class AdminUser extends Authenticatable
 	    'remember_token'
     ];
     
+	protected function serializeDate(\DateTimeInterface $date)
+	{
+	    return $date->format('Y-m-d H:i');
+	}
+    
     public function hasRoute($currentRouteName)
     {
     	$res = $this->getPermissions();

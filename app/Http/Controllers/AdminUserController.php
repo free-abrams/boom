@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\AdminUser;
 use App\Models\Role;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 
 class AdminUserController extends Controller
@@ -12,8 +14,8 @@ class AdminUserController extends Controller
 	private $title = '管理员';
 	
 	private $grid = [
-		['field' => 'id', 'title' => 'ID', 'sort' => true, 'fixed' => 'left'],
-		['field' => '', 'title' => '头像', 'templet' => '#avatar'],
+		['field' => 'id', 'title' => 'ID', 'sort' => true],
+		['field' => 'avatar', 'title' => '头像', 'templet' => '#avatar'],
 		['field' => 'name', 'title' => '昵称', 'sort' => true],
 		['field' => 'username', 'title' => '用户名', 'sort' => true],
 		['field' => 'created_at', 'title' => '创建时间', 'sort' => true],
@@ -144,7 +146,32 @@ class AdminUserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $param = $request->all(['name', 'username', 'password', 'password_confirmed', 'roles']);
+        
+        $validate = Validator::make($param, [
+    		'name' => 'required',
+		    'username' => 'required|unique:admin_users,username,'.$id,
+		    'password' => 'required',
+		    'password_confirmed' => 'required|same:password',
+	    ]);
+     
+    	if ($validate->fails()) {
+    	    return response()->json(['code' => '200', 'data' => $param, 'msg' => $validate->errors()->first()]);
+	    }
+        
+        $admin = AdminUser::findOrFail($id);
+        
+        if ($admin->password == $param['password']) {
+            $param = Arr::except($param, 'password');
+        }
+        
+        $res = $admin->update($param);
+        $admin->role()->sync($param['roles']);
+        if ($res) {
+            return response()->json(['code' => 200, 'data' => $param, 'msg' => '保存成功']);
+        } else {
+        	return response()->json(['code' => 400, 'data' => $param, 'msg' => '保存失败']);
+        }
     }
 
     /**

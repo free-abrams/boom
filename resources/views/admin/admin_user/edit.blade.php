@@ -85,6 +85,7 @@
             });
 
             $.post('{{route('admin-user.update', ['admin_user' => $id])}}', {
+                _method:'PUT',
                 _token:'{{csrf_token()}}',
                 avatar:'',
                 name:$('input[name=title]').val(),
