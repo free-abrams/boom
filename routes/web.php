@@ -26,5 +26,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::resource('index', 'IndexController');
 		Route::resource('role', 'RoleController');
 		Route::resource('permission', 'PermissionController');
+		Route::resource('admin-user', 'AdminUserController');
 	});
 });

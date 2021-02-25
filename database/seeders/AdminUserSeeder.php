@@ -20,6 +20,6 @@ class AdminUserSeeder extends Seeder
         $admin = AdminUser::find(1);
         $admin->username = 'admin@admin';
         $admin->save();
-        $admin->assignRole('admin');
+        $admin->assignRole('super_admin');
     }
 }

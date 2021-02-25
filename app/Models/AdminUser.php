@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,12 +14,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class AdminUser extends Authenticatable
 {
     use HasFactory;
-    use HasRoles;
     
     protected $fillable = [
     	'name',
 	    'username',
 	    'avatar',
+	    'password',
 	    'remember_token'
     ];
     
@@ -60,5 +61,28 @@ class AdminUser extends Authenticatable
     public function role()
     {
         return $this->belongsToMany(Role::class, 'model_has_roles', 'model_id', 'role_id')->with(['permissions']);
+    }
+    
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
+    
+    public function setAvatarAttribute($value)
+    {
+        $this->attributes['avatar'] = $value?$value:config('admin.avatar');
+    }
+    
+    public function assignRole($role)
+    {
+    	if (!is_array($role)) {
+    	    $name[] = $role;
+	    } else {
+    		$name  = $role;
+	    }
+    	
+    	$role = Role::whereIn('name', $name)->get()->pluck('id');
+    	
+    	$this->role()->attach($role);
     }
 }

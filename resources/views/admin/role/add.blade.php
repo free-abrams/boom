@@ -32,7 +32,7 @@
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-2">
-                            <a class="btn " id="submit">保存内容</a>
+                            <a class="btn btn-primary" id="submit">保存内容</a>
                         </div>
                     </div>
                 </div>
@@ -41,6 +41,7 @@
         </div>
     </div>
 </div>
+
 @endsection
 @section('script')
 <script type="text/javascript">

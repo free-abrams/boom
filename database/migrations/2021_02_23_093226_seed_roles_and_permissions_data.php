@@ -17,19 +17,17 @@ class SeedRolesAndPermissionsData extends Migration
 
         // 先创建权限
         Permission::create(['name' => 'auth_manage', 'guard_name' => 'admin', 'title' => '角色与权限', 'route' => null, 'sort' => '10', 'level' => 0, 'path' => '-']);
+        Permission::create(['name' => 'admin-user_manage', 'guard_name' => 'admin', 'title' => '管理员', 'route' => 'admin-user.*', 'sort' => '7', 'level' => 1, 'path' => '-1-', 'parent_id' => 1]);
         Permission::create(['name' => 'role_manage', 'guard_name' => 'admin', 'title' => '角色管理', 'route' => 'role.*', 'sort' => '9', 'level' => 1, 'path' => '-1-', 'parent_id' => 1]);
         Permission::create(['name' => 'permission_manage', 'guard_name' => 'admin', 'title' => '权限管理', 'route' => 'permission.*', 'sort' => 8, 'level' => 1, 'path' => '-1-', 'parent_id' => 1]);
 
         // 创建站长角色，并赋予权限
         $founder = Role::create(['name' => 'super_admin', 'guard_name' => 'admin', 'title' => '超级管理员']);
-        $founder->givePermissionTo('auth_manage');
-        $founder->givePermissionTo('role_manage');
-        $founder->givePermissionTo('permission_manage');
+        $founder->givePermissionTo(['auth_manage', 'admin-user_manage', 'role_manage', 'permission_manage']);
 
         // 创建管理员角色，并赋予权限
         $maintainer = Role::create(['name' => 'admin', 'guard_name' => 'admin', 'title' => '管理员']);
-        $maintainer->givePermissionTo('auth_manage');
-        $founder->givePermissionTo('role_manage');
+        $maintainer->givePermissionTo(['auth_manage', 'role_manage']);
     }
 
     public function down()

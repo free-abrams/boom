@@ -38,4 +38,17 @@ class Role extends Model
         // 只返回没有子节点的数据
         return $permissions;
     }
+    
+    public function givePermissionTo($permission)
+    {
+    	if (!is_array($permission)) {
+    	    $name[] = $permission;
+	    } else {
+    		$name  = $permission;
+	    }
+    	
+        $permission = Permission::whereIn('name', $name)->first();
+        
+        $this->permissions()->attach([$permission->id]);
+    }
 }

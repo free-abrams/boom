@@ -19,7 +19,7 @@ class CreateAdminUsersTable extends Migration
             $table->string('username')->comment('登录用户名');
             $table->string('password')->comment('密码');
             $table->string('avatar')->comment('头像');
-            $table->string('remember_token')->comment('token');
+            $table->string('remember_token')->comment('token')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
