@@ -48,7 +48,7 @@ class AdminUser extends Authenticatable
 	        'show',
 	        'edit'
         ];
-
+        
         foreach ($this->role as $k => $v) {
         	$v->permissions->map(function ($item) use ($action, &$route) {
 	            if (Str::after($item->route, '.') === '*') {
@@ -56,7 +56,9 @@ class AdminUser extends Authenticatable
 			            foreach ($action as $key => $value) {
 			                $route[] = $name.'.'.$value;
 			            }
-		        }
+		        } else {
+	            	$route[] = $item->route;
+	            }
 	        });
         }
         

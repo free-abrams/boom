@@ -146,7 +146,7 @@ class AdminUserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $param = $request->all(['name', 'username', 'password', 'password_confirmed', 'roles']);
+        $param = $request->all(['name', 'username', 'avatar', 'password', 'password_confirmed', 'roles']);
         
         $validate = Validator::make($param, [
     		'name' => 'required',

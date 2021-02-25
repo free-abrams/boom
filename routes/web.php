@@ -23,6 +23,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::any('logout', 'AuthController@logout')->name('logout');
 		Route::get('/', 'HomeController@index')->name('index');
 		Route::get('/error', 'HomeController@error')->name('index.error');
+		Route::any('upload', 'Controller@upload')->name('upload');
 		Route::resource('index', 'IndexController');
 		Route::resource('role', 'RoleController');
 		Route::resource('permission', 'PermissionController');
