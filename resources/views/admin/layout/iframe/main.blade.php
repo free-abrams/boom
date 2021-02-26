@@ -36,6 +36,7 @@
     </div>
 
     <div class="wrapper wrapper-content">
+        @yield('content')
         <div class="row">
             <table id="data" lay-filter="data" class="col-sm-12" lay-skin="line"></table>
             <div class="col-sm-12">

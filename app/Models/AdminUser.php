@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Handlers\Tree;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -26,15 +28,20 @@ class AdminUser extends Authenticatable
     
     public function hasRoute($currentRouteName)
     {
-    	$res = $this->getPermissions();
-
+    	if (Cache::get(config('APP_NAME', 'laravel').'permissions'.$this->id)) {
+    	    $res = Cache::get(config('APP_NAME', 'laravel').'permissions'.$this->id);
+	    } else {
+			$res = $this->getPermissions();
+			Cache::forever(config('APP_NAME', 'laravel').'permissions'.$this->id, $res);
+	    }
+    	
     	return in_array($currentRouteName, $res);
     }
     
     public function getPermissions()
     {
         $route = [];
-        $free = Config('AdminRbac.free');
+        $free = Config('AdminRbac.free', []);
         $action = [
         	'store',
         	'index',
@@ -53,11 +60,11 @@ class AdminUser extends Authenticatable
 			                $route[] = $name.'.'.$value;
 			            }
 		        } else {
-	            	$route[] = $item->route;
+	            	!empty($item->route)?$route[] = $item->route:'';
 	            }
 	        });
         }
-        
+
         return array_merge($route, $free);
     }
     
@@ -75,7 +82,10 @@ class AdminUser extends Authenticatable
     {
         $this->attributes['avatar'] = $value?$value:config('admin.avatar');
     }
-    
+	
+	/**
+	 * @param $role【string|array】
+	 */
     public function assignRole($role)
     {
     	if (!is_array($role)) {

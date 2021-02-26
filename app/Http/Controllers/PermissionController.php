@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Handlers\Tree;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -35,14 +36,10 @@ class PermissionController extends Controller
 
     	$param = $request->all();
     	
-    	if (isset($param['page'])) {
-    	    $res  = Permission::paginate(Arr::get($param, 'limit', 10), '*', 'page', '1');
-			
-    	    return $this->showMsg($res->items(), 0, $res->total());
-	    }
-    	
-    	
-        return view('admin/permission/index', compact('data'));
+		$res = Permission::all(['id', 'title', 'parent_id'])->toArray();
+        $res = Tree::array_tree($res);
+
+        return view('admin/permission/index', compact('res', 'data'));
     }
 
     /**
